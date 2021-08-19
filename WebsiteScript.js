@@ -1,99 +1,75 @@
+////To check Name///
+var nameInput = document.getElementById('name')
 
-
-
-
-
-
-function validation(){
-    var name=document.getElementById("name").value;
-    var phone=document.getElementById("phone").value;
-    var email=document.getElementById("email").value;
-    var message=document.getElementById("message").value;
-    var text;
-
-
-
+nameInput.addEventListener('blur', () => {
+    var name = nameInput.value
     if(name.length==0){
         text="Please Enter your Name";
         error_name.innerHTML = text;
-        return false;
-    } else{ text=" "
-error_name.innerHTML=text;
+    } else if(name.length<4){
+        error_name.innerHTML="Name should be more than 3 Characters"
 }
+})
+nameInput.addEventListener('keyup',()=>{
+    var name = nameInput.value
+     if(name.includes('  ')){
+error_name.innerHTML="Name should not contain 2 concecutive spaces"
+     }else{
+        error_name.innerHTML=" "
+     }
+})
 
-    if(name.length<3||name.length>20||name.length==" "|| name.includes('  ')){
-        text="Please Enter Valid Name";
-        error_name.innerHTML = text;
-        return false;
-    }else{text=" "
-error_name.innerHTML=text;
-}
-   if(isNaN(phone) || phone.length==0 || phone.includes('e')){
-        text="Please Enter your Number";
+////To check phone number////
+var phoneInput = document.getElementById('phone')
+
+phoneInput.addEventListener('blur',()=>{
+    var phone=phoneInput.value
+    if(isNaN(phone) || phone.length==0){
+        text="This field should not be blank";
         error_phone.innerHTML = text;
-        return false;
-}    
+} else if(isNaN(phone) || phone.length>10){
+    text="Please Enter Valid Number";
+    error_phone.innerHTML = text;
+}     
+})
 
+//////To check email///////
+var emailInput = document.getElementById('email')
 
-    if(isNaN(phone) || phone.length!=10){
-        text="Please Enter Valid Number";
-        error_phone.innerHTML = text;
-        return false;
-    }else{
-        text=" "
-        error_phone.innerHTML=text;
-    }
-
-    
-
-
-
-
-    
+emailInput.addEventListener('blur',()=>{
+    var email=emailInput.value
+    var regexEmail = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
     if(email.length==0){
-        text="Please Enter Your E-mail";
+        text="This field cannot be empty";
         error_mail.innerHTML = text;
-        return false;
+    }else if (!email.match(regexEmail)) {
+        console.log('regex')
+        error_mail.innerHTML = 'This email id is not valid.'
+      } else {
+        error_mail.innerHTML = ''
     }
+    
+})
+//////To check////////
+var messageInput=document.getElementById('message')
 
-    if(email.indexOf("@")== -1 || email.length<6){
-        text="Please Enter Valid E-mail";
-        error_mail.innerHTML = text;
-        return false;
-    }else{
-        text=" "
-        error_mail.innerHTML=text;
-    } 
-
-    if(message.length==0){
-        text="Please Enter Your Message"
+messageInput.addEventListener('blur',()=>{
+    var message=messageInput.value
+    if(message.length<=25){
+        text="Please Enter More Than 25 Characters"
         error_message.innerHTML = text;
-        return false;
-    } 
-
-
-    if(message.length<=40){
-        text="Please Enter More Than 40 Characters"
-        error_message.innerHTML = text;
-        return false;
     }else{
         text=" "
         error_message.innerHTML=text;
     }
+})
 
-    alert("Submitted Succesfully!")
-    data = {
-        name, phone, email, message
-    }
-    mail(data)
-    return false;
 
-}
 
-function mail(data) {
+function mail() {
         $.ajax({
             url:"https://script.google.com/macros/s/AKfycbw79b_crwItgWTVdvNaUylzUKAdVMOJcla-pHZm/exec",
-            data:data,
+            data:$("#submit-form").serialize(),
             method:"post",
             success:function (response){
                 alert("Form submitted successfully")
@@ -106,6 +82,8 @@ function mail(data) {
             }
         })
 }
+
+
 
 
 
