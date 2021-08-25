@@ -2,7 +2,7 @@
 ////To check Name///
 var nameInput = document.getElementById('name')
 var validname=false;
-
+var nameRegex=/^[ a-zA-Z]+$/
 nameInput.addEventListener('blur', () => {
     var name = nameInput.value
     if(name.length==0){
@@ -22,7 +22,12 @@ nameInput.addEventListener('keyup',()=>{
          validname=false;
 error_name.innerHTML="Name should not contain 2 concecutive spaces"
 
-     }else{
+     }else if(!name.match(nameRegex)){
+         error_name.innerHTML='Numeric values are not allowed in name'
+         validname=false;
+
+     }
+     else{
          validname=true;
         error_name.innerHTML=" "
        
@@ -34,20 +39,25 @@ var phoneInput = document.getElementById('phone')
 var validphone=false;
 phoneInput.addEventListener('blur',()=>{
     var phone=phoneInput.value
-    if(isNaN(phone) || phone.length==0){
+    if(phone.length==0){
          validphone=false;
         text="This field should not be blank";
         error_phone.innerHTML = text;
    
-} else if(isNaN(phone) || phone.length<10){
-     validphone=false;
-    text="Please Enter Valid Number";
-    error_phone.innerHTML = text;
-   
-}else{
+}else if(phone.length<10){
+    error_phone.innerHTML='Number should be 10 digits'
+}
+else{
     error_phone.innerHTML=" ";
      validphone=true;
 }     
+})
+phoneInput.addEventListener('keypress', (e)=>{
+
+    if((!e.key.match(/[0-9]/))||(phoneInput.value.length > 9)){
+        e.preventDefault()
+    }
+
 })
 
 //////To check email///////
@@ -106,7 +116,13 @@ function mail() {
                 alert("Something Error")
 
             }
-        })}
+        })} else{
+            error_name.innerHTML="Please Enter this field"
+            error_phone.innerHTML="Please Enter this field"
+            error_mail.innerHTML = 'Please Enter this field'
+            error_message.innerHTML='Please Enter this field'
+
+        }
 }
 
 
